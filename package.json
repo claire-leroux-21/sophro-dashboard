@@ -1,0 +1,9 @@
+{
+  "name": "sophro-dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard Sophro avec sync Notion bidirectionnelle",
+  "private": true,
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  }
+}

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard Sophro — Claire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+:root {
+  --bg: #FDF8F5; --bg-2: #F7EDE8; --bg-3: #EFE0D8;
+  --bordeaux: #5C1A2B; --rose: #C97B7B; --mauve: #8B5E7A;
+  --text: #2D1318; --text-dim: #6B4F54; --text-muted: #A8908E;
+  --border: #E3CFC8; --border-strong: #C9AFA7;
+  --acq-color: #5C1A2B; --conv-color: #A8435A; --prod-color: #D97A54; --fond-color: #8B5E7A;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.45; }
+#root { min-height: 100vh; }
+.app { max-width: 1180px; margin: 0 auto; padding: 24px 28px 60px; }
+.mono { font-family: 'DM Mono', monospace; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+.header-left h1 { font-size: 28px; font-weight: 700; color: var(--bordeaux); margin: 0 0 4px; letter-spacing: -0.01em; }
+.header-left .subtitle { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.header-right { text-align: right; }
+.header-date { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.sync-status { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #6BAA6B; }
+.sync-dot.syncing { background: #E0A23A; animation: pulse 1s infinite; }
+.sync-dot.error { background: #C13A3A; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 22px; overflow-x: auto; }
+.tab { background: none; border: none; padding: 10px 14px; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.12s; }
+.tab:hover { color: var(--bordeaux); }
+.tab.active { color: var(--bordeaux); border-bottom-color: var(--bordeaux); font-weight: 600; }
+
+.block { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(92,26,43,0.04); }
+.block-title { font-size: 13px; font-weight: 600; color: var(--bordeaux); margin: 0 0 2px; }
+.block-subtitle { font-family: 'DM Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+
+.repart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+.repart-stat { text-align: right; }
+.repart-stat .big { font-size: 28px; font-weight: 700; color: var(--bordeaux); line-height: 1; letter-spacing: -0.02em; }
+.repart-stat .lbl { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-top: 2px; }
+.repart-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--bg-2); margin-bottom: 10px; }
+.repart-bar-seg { transition: all 0.3s; }
+.repart-legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; }
+.repart-legend-item { display: flex; align-items: center; gap: 6px; }
+.repart-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.repart-alert { margin-top: 12px; background: #FAE6E6; border: 1px solid #E8B0B0; border-radius: 6px; padding: 8px 11px; font-size: 12px; color: var(--conv-color); font-weight: 500; }
+.fond-alert-legend { color: #D14848 !important; font-weight: 700; }
+
+.week-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 14px; margin-bottom: 14px; }
+@media (max-width: 980px) { .week-grid { grid-template-columns: 1fr; } }
+
+.today-item { display: grid; grid-template-columns: 22px 17px 1fr auto auto; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 5px; transition: all 0.12s; background: var(--bg); }
+.today-item:hover { border-color: var(--border-strong); }
+.today-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
+.today-name { font-weight: 500; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.empty-msg { color: var(--text-muted); font-size: 12.5px; font-style: italic; padding: 16px 0 6px; }
+.filtre-clarte { font-family: 'DM Mono', monospace; font-size: 10.5px; font-style: italic; color: var(--text-dim); margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); line-height: 1.45; }
+
+.check { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--border-strong); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.12s; padding: 0; }
+.check:hover { border-color: var(--bordeaux); }
+.check.done { background: var(--bordeaux); border-color: var(--bordeaux); }
+.check.done svg { display: block; }
+.check svg { display: none; width: 11px; height: 11px; }
+
+.xbtn { background: none; border: none; color: var(--text-muted); font-size: 15px; cursor: pointer; padding: 0 4px; line-height: 1; transition: color 0.12s; }
+.xbtn:hover { color: #C13A3A; }
+
+.standup-group-head { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; padding-top: 4px; }
+.standup-group-head:first-child { margin-top: 0; padding-top: 0; }
+.standup-group-dot { width: 7px; height: 7px; border-radius: 50%; }
+.standup-group-name { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); font-weight: 500; }
+.standup-item { display: flex; align-items: center; gap: 8px; padding: 4px 6px; border-radius: 5px; min-height: 28px; font-size: 12.5px; transition: background 0.1s; cursor: pointer; }
+.standup-item:hover { background: var(--bg-2); }
+.standup-item input[type=checkbox] { margin: 0; cursor: pointer; accent-color: var(--bordeaux); }
+.standup-item input[type=checkbox]:disabled { cursor: not-allowed; opacity: 0.4; }
+.standup-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prio-pill { width: 16px; height: 16px; border-radius: 50%; font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+.prio-pill.H { background: var(--conv-color); }
+.prio-pill.M { background: #C59355; }
+.prio-pill.B { background: #B5A5A1; }
+.standup-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.standup-counter { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+.btn { background: var(--bordeaux); color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
+.btn:hover:not(:disabled) { background: #4A1523; }
+.btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+
+.brief-area { width: 100%; min-height: 100px; border: 1px solid var(--border); border-radius: 7px; padding: 10px 12px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--bg); resize: vertical; line-height: 1.55; }
+.brief-area:focus { outline: none; border-color: var(--bordeaux); }
+
+.add-form { display: grid; grid-template-columns: 2fr 1fr 0.8fr 1fr 0.9fr 1.1fr auto; gap: 6px; margin-bottom: 14px; align-items: center; }
+@media (max-width: 900px) { .add-form { grid-template-columns: 1fr 1fr; } }
+.add-form input, .add-form select { padding: 7px 9px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 12.5px; background: var(--bg); color: var(--text); }
+.add-form input:focus, .add-form select:focus { outline: none; border-color: var(--bordeaux); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.fbtn { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 5px 10px; border-radius: 14px; font-family: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
+.fbtn:hover { border-color: var(--border-strong); color: var(--text); }
+.fbtn.active { background: var(--bordeaux); color: #fff; border-color: var(--bordeaux); }
+
+.action-card { display: grid; grid-template-columns: 17px 1fr auto auto auto auto auto 18px; align-items: center; gap: 8px; padding: 7px 10px; background: #fff; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 6px; transition: all 0.12s; }
+.action-card:hover { border-color: var(--border-strong); box-shadow: 0 1px 2px rgba(92,26,43,0.04); }
+.action-card.done { opacity: 0.55; background: var(--bg-2); }
+.action-card.done .action-name { text-decoration: line-through; color: var(--text-muted); }
+.action-name { font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+
+.badge { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 10px; white-space: nowrap; letter-spacing: 0.02em; cursor: pointer; user-select: none; transition: all 0.12s; }
+.badge:hover { filter: brightness(1.05); }
+.badge-pilier { color: #fff; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; font-size: 9.5px; }
+.badge-pilier.acquisition { background: var(--acq-color); }
+.badge-pilier.conversion { background: var(--conv-color); }
+.badge-pilier.produit { background: var(--prod-color); }
+.badge-pilier.fondation { background: var(--fond-color); }
+.badge-type { background: var(--bg-3); color: var(--text-dim); }
+.badge-status { background: var(--bg-2); color: var(--text-dim); }
+.badge-status.done { background: #D6E8D4; color: #3D6B3B; }
+.badge-status.progress { background: #E6DAEE; color: #5E3F77; }
+.badge-recur { background: #3D0E18; color: #fff; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; }
+.pastilles { letter-spacing: -2px; font-size: 10px; }
+.badge-prio.haute { background: var(--conv-color); color: #fff; font-weight: 700; }
+.badge-prio.moyenne { background: var(--bg-3); color: var(--bordeaux); }
+.badge-prio.basse { background: var(--bg-2); color: var(--text-muted); }
+.badge-impact { background: transparent; padding: 2px 5px; letter-spacing: -1.5px; font-size: 11px; color: #D9A73F; }
+
+@media (max-width: 800px) {
+  .action-card { grid-template-columns: 17px 1fr auto auto auto 18px; }
+  .hide-800 { display: none !important; }
+}
+
+.pilier-header { padding: 18px 20px; border-radius: 10px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; }
+.pilier-header.acquisition { background: linear-gradient(135deg, var(--acq-color) 0%, #7A2535 100%); }
+.pilier-header.conversion { background: linear-gradient(135deg, var(--conv-color) 0%, #B8526E 100%); }
+.pilier-header.produit { background: linear-gradient(135deg, var(--prod-color) 0%, #E08E6E 100%); }
+.pilier-header.fondation { background: linear-gradient(135deg, var(--fond-color) 0%, #A074A0 100%); }
+.pilier-header h2 { margin: 0 0 4px; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.pilier-header p { margin: 0 0 10px; font-size: 12.5px; opacity: 0.9; }
+.pilier-stats { display: flex; gap: 18px; flex-wrap: wrap; }
+.pilier-stat { font-family: 'DM Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.95; }
+.pilier-stat strong { font-size: 14px; font-weight: 700; display: block; font-family: 'DM Sans', sans-serif; }
+
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; font-style: italic; }
+.loading-state { display: flex; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.standup-body { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.standup-body::-webkit-scrollbar { width: 5px; }
+.standup-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+.error-banner { background: #FAE6E6; border: 1px solid #E8B0B0; border-radius: 6px; padding: 10px 14px; font-size: 12.5px; color: #C13A3A; margin-bottom: 14px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+const PILIER_META = {
+  acquisition: { name: "Acquisition", color: "var(--acq-color)", desc: "Rendre visible — RS, UGC, SEO, GMB, pubs, partenariats visibilité" },
+  conversion:  { name: "Conversion",  color: "var(--conv-color)", desc: "Transformer prospects en clients — site, pages de vente, témoignages, DM" },
+  produit:     { name: "Produit",     color: "var(--prod-color)", desc: "Ce que je délivre — offres, protocoles, packs, expérience client" },
+  fondation:   { name: "Fondation",   color: "var(--fond-color)", desc: "Socle long terme — admin, partenariats B2B, vision, outreach entreprise" }
+};
+const PILIER_ORDER = ["acquisition","conversion","produit","fondation"];
+const LOCAL_KEY = "sophro-local-v2";
+
+// ===== API helpers =====
+const api = {
+  list: () => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "list"}) }).then(r => r.json()),
+  update: (id, patch) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "update", id, patch}) }).then(r => r.json()),
+  create: (action) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "create", action})}).then(r => r.json()),
+  delete: (id) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "delete", id}) }).then(r => r.json()),
+  history: (id, text) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "history", id, text}) }).then(r => r.json()),
+};
+
+// ===== Utils =====
+function getMondayISO() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const mon = new Date(d.setDate(diff));
+  return mon.toISOString().slice(0,10);
+}
+function todayFR() {
+  const d = new Date();
+  const jours = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+  const mois = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+  return `${jours[d.getDay()]} ${d.getDate()} ${mois[d.getMonth()]} ${d.getFullYear()}`;
+}
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s.weekStart !== getMondayISO()) {
+        s.today = [];
+        s.standupSel = [];
+        s.weekStart = getMondayISO();
+      }
+      return s;
+    }
+  } catch(e) {}
+  return { today: [], weekNote: "", standupSel: [], activeTab: "week", filter: "all", weekStart: getMondayISO() };
+}
+function saveLocal(s) { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(s)); } catch(e) {} }
+
+// ===== Composants =====
+function Check({ done, onClick }) {
+  return (
+    <button className={"check" + (done ? " done" : "")} onClick={onClick} aria-label="toggle">
+      <svg viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    </button>
+  );
+}
+
+function RepartitionBloc({ actions }) {
+  const open = actions.filter(a => a.status !== "Fait");
+  const counts = { acquisition:0, conversion:0, produit:0, fondation:0 };
+  open.forEach(a => counts[a.pillar]++);
+  const total = open.length || 1;
+  const pcts = {};
+  PILIER_ORDER.forEach(p => pcts[p] = Math.round(counts[p] / total * 100));
+  const fondAlert = counts.fondation > 2;
+
+  return (
+    <div className="block">
+      <div className="repart-head">
+        <div>
+          <div className="block-title">Répartition par pilier</div>
+          <div className="block-subtitle">Cible : 60–70% Acq+Conv · 20–30% Fondation · 10–20% Produit</div>
+        </div>
+        <div className="repart-stat">
+          <div className="big">{open.length}</div>
+          <div className="lbl">Actions ouvertes</div>
+        </div>
+      </div>
+      <div className="repart-bar">
+        {PILIER_ORDER.map(p => counts[p] > 0 && (
+          <div key={p} className="repart-bar-seg" style={{width: `${counts[p]/total*100}%`, background: PILIER_META[p].color}} />
+        ))}
+      </div>
+      <div className="repart-legend">
+        {PILIER_ORDER.map(p => (
+          <div key={p} className={"repart-legend-item" + (p==="fondation" && fondAlert ? " fond-alert-legend" : "")}>
+            <div className="repart-legend-dot" style={{background: PILIER_META[p].color}} />
+            <span>{PILIER_META[p].name} {counts[p]} · {pcts[p]}%</span>
+          </div>
+        ))}
+      </div>
+      {fondAlert && (
+        <div className="repart-alert">
+          ⚠ {counts.fondation} actions Fondation ouvertes — max 2 par semaine. Priorise ce qui rapproche d'un client dans les 7 jours.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Stars({ n }) { return <span className="badge badge-impact">{"⭐".repeat(n)}</span>; }
+function Pastilles({ done, total }) {
+  let s = "";
+  for (let i=0;i<total;i++) s += i < done ? "●" : "○";
+  return <span className="pastilles">{s}</span>;
+}
+
+function ActionCard({ action, onToggle, onCycle, onRename, onDelete }) {
+  const isDone = action.status === "Fait";
+  const isRecur = action.recur > 0;
+  return (
+    <div className={"action-card" + (isDone ? " done" : "")} title={action.name}>
+      <Check done={isDone} onClick={() => onToggle(action.id)} />
+      <div className="action-name" onDoubleClick={() => onRename(action.id)}>{action.name}</div>
+      <span className={"badge badge-pilier " + action.pillar} onClick={() => onCycle(action.id, "pillar")}>{PILIER_META[action.pillar].name}</span>
+      <span className="badge badge-type hide-800" onClick={() => onCycle(action.id, "type")}>{action.type}</span>
+      {isRecur ? (
+        <span className="badge badge-recur">
+          <Pastilles done={action.weekDone} total={action.recur} />
+          <span>{action.weekDone}/{action.recur}</span>
+        </span>
+      ) : (
+        <span className={"badge badge-status hide-800" + (action.status==="Fait" ? " done" : action.status==="En cours" ? " progress" : "")} onClick={() => onCycle(action.id, "status")}>{action.status}</span>
+      )}
+      <span className={"badge badge-prio " + action.prio.toLowerCase()} onClick={() => onCycle(action.id, "prio")}>{action.prio}</span>
+      <Stars n={action.impact} />
+      <button className="xbtn" onClick={() => onDelete(action.id)}>×</button>
+    </div>
+  );
+}
+
+function ActionList({ actions, ...handlers }) {
+  if (!actions.length) return <div className="empty-state">Aucune action dans cette vue.</div>;
+  return <div>{actions.map(a => <ActionCard key={a.id} action={a} {...handlers} />)}</div>;
+}
+
+function TodayBloc({ actions, today, onToggle, onRemoveToday }) {
+  const items = today.map(id => actions.find(a => a.id === id)).filter(Boolean);
+  return (
+    <div className="block">
+      <div className="block-title">Aujourd'hui</div>
+      <div className="block-subtitle">{items.length} / 5 priorités</div>
+      <div style={{marginTop: 12}}>
+        {items.length === 0 ? (
+          <div className="empty-msg">Pas encore de priorité pour aujourd'hui. → Standup picker à droite pour sélectionner jusqu'à 5 actions.</div>
+        ) : items.map((a, i) => {
+          const isDone = a.status === "Fait";
+          return (
+            <div key={a.id} className="today-item">
+              <span className="today-num">{String(i+1).padStart(2,"0")}</span>
+              <Check done={isDone} onClick={() => onToggle(a.id)} />
+              <div className="today-name" title={a.name}>{a.name}</div>
+              <span className={"badge badge-pilier " + a.pillar}>{PILIER_META[a.pillar].name}</span>
+              <button className="xbtn" onClick={() => onRemoveToday(a.id)}>×</button>
+            </div>
+          );
+        })}
+      </div>
+      <div className="filtre-clarte">
+        Filtre clarté — Est-ce que ça peut me rapprocher d'un client dans les 7 jours ? Si non → Fondation.
+      </div>
+    </div>
+  );
+}
+
+function StandupPicker({ actions, today, standupSel, onToggleSel, onAddToToday }) {
+  const available = actions.filter(a => a.status !== "Fait" && !today.includes(a.id));
+  const grouped = {};
+  PILIER_ORDER.forEach(p => grouped[p] = []);
+  available.forEach(a => grouped[a.pillar].push(a));
+  const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
+  PILIER_ORDER.forEach(p => grouped[p].sort((a,b) => prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact));
+  const roomLeft = 5 - today.length;
+  const canAdd = standupSel.length > 0 && roomLeft > 0;
+
+  return (
+    <div className="block">
+      <div className="block-title">Standup picker</div>
+      <div className="block-subtitle">Sélectionner jusqu'à 5 actions pour aujourd'hui</div>
+      <div className="standup-body" style={{marginTop: 10}}>
+        {PILIER_ORDER.map(p => grouped[p].length > 0 && (
+          <div key={p}>
+            <div className="standup-group-head">
+              <div className="standup-group-dot" style={{background: PILIER_META[p].color}} />
+              <div className="standup-group-name">{PILIER_META[p].name}</div>
+            </div>
+            {grouped[p].map(a => {
+              const selected = standupSel.includes(a.id);
+              const disabled = !selected && standupSel.length >= 5;
+              return (
+                <label key={a.id} className="standup-item">
+                  <input type="checkbox" checked={selected} disabled={disabled} onChange={() => onToggleSel(a.id)} />
+                  <span className="standup-name" title={a.name}>{a.name}</span>
+                  <span className={"prio-pill " + a.prio[0]}>{a.prio[0]}</span>
+                </label>
+              );
+            })}
+          </div>
+        ))}
+        {available.length === 0 && <div className="empty-state" style={{padding:"14px 0"}}>Toutes les actions disponibles sont déjà dans Aujourd'hui.</div>}
+      </div>
+      <div className="standup-footer">
+        <div className="standup-counter">{standupSel.length} / 5 sélectionné{standupSel.length>1?"s":""}</div>
+        <button className="btn" disabled={!canAdd} onClick={onAddToToday}>
+          {standupSel.length > 0 ? `Ajouter ${Math.min(standupSel.length, roomLeft)} à aujourd'hui` : "Ajouter à aujourd'hui"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BriefBloc({ value, onChange }) {
+  return (
+    <div className="block">
+      <div className="block-title">Brief de la semaine</div>
+      <div className="block-subtitle">Ce que je veux faire bouger</div>
+      <textarea className="brief-area" style={{marginTop: 10}} value={value} onChange={(e) => onChange(e.target.value)} placeholder="Ce que je veux faire bouger cette semaine…" />
+    </div>
+  );
+}
+
+function AddForm({ onAdd }) {
+  const [name, setName] = useState("");
+  const [pillar, setPillar] = useState("acquisition");
+  const [type, setType] = useState("B2C");
+  const [prio, setPrio] = useState("Moyenne");
+  const [impact, setImpact] = useState(2);
+  const [recur, setRecur] = useState(0);
+  const submit = () => {
+    if (!name.trim()) return;
+    onAdd({ name: name.trim(), pillar, type, prio, impact, recur, status: "À faire", weekDone: 0 });
+    setName("");
+  };
+  return (
+    <div className="add-form">
+      <input type="text" placeholder="Nouvelle action…" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
+      <select value={pillar} onChange={(e) => setPillar(e.target.value)}>
+        <option value="acquisition">Acquisition</option><option value="conversion">Conversion</option>
+        <option value="produit">Produit</option><option value="fondation">Fondation</option>
+      </select>
+      <select value={type} onChange={(e) => setType(e.target.value)}><option value="B2C">B2C</option><option value="B2B">B2B</option></select>
+      <select value={prio} onChange={(e) => setPrio(e.target.value)}><option value="Haute">Haute</option><option value="Moyenne">Moyenne</option><option value="Basse">Basse</option></select>
+      <select value={impact} onChange={(e) => setImpact(+e.target.value)}><option value={1}>⭐</option><option value={2}>⭐⭐</option><option value={3}>⭐⭐⭐</option></select>
+      <select value={recur} onChange={(e) => setRecur(+e.target.value)}>
+        <option value={0}>Sans récurrence</option><option value={1}>1×/sem</option><option value={3}>3×/sem</option><option value={5}>5×/sem</option>
+      </select>
+      <button className="btn" onClick={submit}>Ajouter</button>
+    </div>
+  );
+}
+
+// ===== APP =====
+function App() {
+  const [actions, setActions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [syncState, setSyncState] = useState("idle"); // idle | syncing | error
+  const [local, setLocal] = useState(loadLocal);
+
+  useEffect(() => saveLocal(local), [local]);
+
+  const fetchActions = useCallback(async () => {
+    setSyncState("syncing");
+    try {
+      const data = await api.list();
+      if (data.error) throw new Error(data.error);
+      setActions(data);
+      setError(null);
+      setSyncState("idle");
+    } catch(e) {
+      setError("Impossible de charger depuis Notion : " + e.message);
+      setSyncState("error");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchActions(); }, [fetchActions]);
+
+  const updateLocalAction = (id, patch) => setActions(as => as.map(a => a.id === id ? {...a, ...patch} : a));
+
+  const syncUpdate = async (id, patch) => {
+    setSyncState("syncing");
+    try {
+      const res = await api.update(id, patch);
+      if (res.error) throw new Error(res.error);
+      setSyncState("idle");
+    } catch(e) {
+      setSyncState("error");
+      setError("Sync échouée : " + e.message);
+    }
+  };
+
+  const toggleDone = async (id) => {
+    const a = actions.find(x => x.id === id);
+    if (!a) return;
+    if (a.recur > 0) {
+      let wd = a.weekDone + 1;
+      if (wd > a.recur) wd = 0;
+      updateLocalAction(id, { weekDone: wd });
+      syncUpdate(id, { weekDone: wd });
+    } else {
+      const newStatus = a.status === "Fait" ? "À faire" : "Fait";
+      updateLocalAction(id, { status: newStatus });
+      if (newStatus === "Fait") setLocal(l => ({...l, today: l.today.filter(i => i !== id), standupSel: l.standupSel.filter(i => i !== id)}));
+      syncUpdate(id, { status: newStatus });
+    }
+  };
+
+  const cycleField = (id, field) => {
+    const a = actions.find(x => x.id === id);
+    if (!a) return;
+    let patch = {};
+    if (field === "pillar") patch.pillar = PILIER_ORDER[(PILIER_ORDER.indexOf(a.pillar)+1) % 4];
+    if (field === "type") patch.type = a.type === "B2C" ? "B2B" : "B2C";
+    if (field === "status") patch.status = { "À faire": "En cours", "En cours": "Fait", "Fait": "À faire" }[a.status];
+    if (field === "prio") patch.prio = { Haute: "Moyenne", Moyenne: "Basse", Basse: "Haute" }[a.prio];
+    if (field === "impact") patch.impact = a.impact === 3 ? 1 : a.impact + 1;
+    updateLocalAction(id, patch);
+    syncUpdate(id, patch);
+  };
+
+  const renameAction = (id) => {
+    const a = actions.find(x => x.id === id);
+    if (!a) return;
+    const name = prompt("Renommer l'action :", a.name);
+    if (name && name.trim()) {
+      updateLocalAction(id, { name: name.trim() });
+      syncUpdate(id, { name: name.trim() });
+    }
+  };
+
+  const deleteAction = async (id) => {
+    if (!confirm("Supprimer définitivement cette action ?")) return;
+    setActions(as => as.filter(a => a.id !== id));
+    setLocal(l => ({...l, today: l.today.filter(i => i !== id), standupSel: l.standupSel.filter(i => i !== id)}));
+    setSyncState("syncing");
+    try {
+      await api.delete(id);
+      setSyncState("idle");
+    } catch(e) {
+      setSyncState("error");
+      setError("Suppression échouée : " + e.message);
+    }
+  };
+
+  const addAction = async (a) => {
+    setSyncState("syncing");
+    try {
+      const res = await api.create(a);
+      if (res.error) throw new Error(res.error);
+      setActions(prev => [res, ...prev]);
+      setSyncState("idle");
+    } catch(e) {
+      setSyncState("error");
+      setError("Création échouée : " + e.message);
+    }
+  };
+
+  const removeFromToday = (id) => setLocal(l => ({...l, today: l.today.filter(i => i !== id)}));
+  const toggleStandupSel = (id) => setLocal(l => ({...l, standupSel: l.standupSel.includes(id) ? l.standupSel.filter(i => i !== id) : (l.standupSel.length < 5 ? [...l.standupSel, id] : l.standupSel)}));
+  const addToToday = () => setLocal(l => {
+    const avail = 5 - l.today.length;
+    const toAdd = l.standupSel.slice(0, avail);
+    return {...l, today: [...l.today, ...toAdd], standupSel: [], activeTab: "week"};
+  });
+
+  const filteredActions = useMemo(() => {
+    let out = actions;
+    const f = local.filter;
+    if (f === "all") out = actions.filter(a => a.status !== "Fait");
+    else if (f === "haute") out = actions.filter(a => a.status !== "Fait" && a.prio === "Haute");
+    else if (f === "recurrent") out = actions.filter(a => a.status !== "Fait" && a.recur > 0);
+    else if (["acquisition","conversion","produit","fondation"].includes(f)) out = actions.filter(a => a.status !== "Fait" && a.pillar === f);
+    else if (["B2C","B2B"].includes(f)) out = actions.filter(a => a.status !== "Fait" && a.type === f);
+    else if (f === "done") out = actions.filter(a => a.status === "Fait");
+    const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
+    return [...out].sort((a,b) => prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact);
+  }, [actions, local.filter]);
+
+  const handlers = { onToggle: toggleDone, onCycle: cycleField, onRename: renameAction, onDelete: deleteAction };
+
+  const pillarView = (p) => {
+    const acts = actions.filter(a => a.pillar === p && a.status !== "Fait");
+    const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
+    acts.sort((a,b) => prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact);
+    const all = actions.filter(a => a.pillar === p);
+    const stats = {
+      open: all.filter(a => a.status !== "Fait").length,
+      recur: all.filter(a => a.recur > 0 && a.status !== "Fait").length,
+      B2C: all.filter(a => a.type === "B2C" && a.status !== "Fait").length,
+      B2B: all.filter(a => a.type === "B2B" && a.status !== "Fait").length,
+      done: all.filter(a => a.status === "Fait").length
+    };
+    return (
+      <>
+        <div className={"pilier-header " + p}>
+          <h2>{PILIER_META[p].name}</h2>
+          <p>{PILIER_META[p].desc}</p>
+          <div className="pilier-stats">
+            <div className="pilier-stat"><strong>{stats.open}</strong>Ouvertes</div>
+            <div className="pilier-stat"><strong>{stats.recur}</strong>Récurrentes</div>
+            <div className="pilier-stat"><strong>{stats.B2C}</strong>B2C</div>
+            <div className="pilier-stat"><strong>{stats.B2B}</strong>B2B</div>
+            <div className="pilier-stat"><strong>{stats.done}</strong>Faites</div>
+          </div>
+        </div>
+        <RepartitionBloc actions={actions} />
+        <ActionList actions={acts} {...handlers} />
+      </>
+    );
+  };
+
+  const filters = [["all","Toutes ouvertes"],["haute","Haute prio"],["recurrent","Récurrentes"],["acquisition","Acquisition"],["conversion","Conversion"],["produit","Produit"],["fondation","Fondation"],["B2C","B2C"],["B2B","B2B"],["done","Fait"]];
+  const tabs = [["week","Cette semaine"],["open","Toutes les actions"],["acquisition","Acquisition"],["conversion","Conversion"],["produit","Produit & Expérience"],["fondation","Fondation"]];
+
+  return (
+    <div className="app">
+      <div className="header">
+        <div className="header-left">
+          <h1>Dashboard Sophro</h1>
+          <div className="subtitle">Cabinet · Paris 11e · Séances & B2B</div>
+        </div>
+        <div className="header-right">
+          <div className="header-date">{todayFR()}</div>
+          <div className="sync-status">
+            <div className={"sync-dot " + syncState} />
+            {syncState === "syncing" ? "Sync Notion…" : syncState === "error" ? "Sync erreur" : "Sync OK"}
+          </div>
+        </div>
+      </div>
+
+      {error && <div className="error-banner">{error} <button className="xbtn" onClick={() => setError(null)}>×</button></div>}
+
+      <div className="tabs">
+        {tabs.map(([k, l]) => (
+          <button key={k} className={"tab" + (local.activeTab === k ? " active" : "")} onClick={() => setLocal(s => ({...s, activeTab: k}))}>{l}</button>
+        ))}
+      </div>
+
+      {loading ? <div className="loading-state">Chargement des actions depuis Notion…</div> : (
+        <>
+          {local.activeTab === "week" && (
+            <>
+              <RepartitionBloc actions={actions} />
+              <div className="week-grid">
+                <TodayBloc actions={actions} today={local.today} onToggle={toggleDone} onRemoveToday={removeFromToday} />
+                <StandupPicker actions={actions} today={local.today} standupSel={local.standupSel} onToggleSel={toggleStandupSel} onAddToToday={addToToday} />
+              </div>
+              <BriefBloc value={local.weekNote} onChange={(v) => setLocal(s => ({...s, weekNote: v}))} />
+            </>
+          )}
+          {local.activeTab === "open" && (
+            <>
+              <RepartitionBloc actions={actions} />
+              <div className="block">
+                <div className="block-title" style={{marginBottom: 10}}>Ajouter une action</div>
+                <AddForm onAdd={addAction} />
+                <div className="filters">
+                  {filters.map(([k, l]) => (
+                    <button key={k} className={"fbtn" + (local.filter === k ? " active" : "")} onClick={() => setLocal(s => ({...s, filter: k}))}>{l}</button>
+                  ))}
+                </div>
+                <ActionList actions={filteredActions} {...handlers} />
+              </div>
+            </>
+          )}
+          {PILIER_ORDER.includes(local.activeTab) && pillarView(local.activeTab)}
+        </>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
