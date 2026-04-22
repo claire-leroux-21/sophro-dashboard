@@ -1,6 +1,3 @@
-Index · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,8 +22,7 @@ Copy
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.45; }
 #root { min-height: 100vh; }
 .app { max-width: 1180px; margin: 0 auto; padding: 24px 28px 60px; }
-.mono { font-family: 'DM Mono', monospace; }
- 
+
 .header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
 .header-left h1 { font-size: 28px; font-weight: 700; color: var(--bordeaux); margin: 0 0 4px; letter-spacing: -0.01em; }
 .header-left .subtitle { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
@@ -37,16 +33,16 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .sync-dot.syncing { background: #E0A23A; animation: pulse 1s infinite; }
 .sync-dot.error { background: #C13A3A; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
- 
+
 .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 22px; overflow-x: auto; }
 .tab { background: none; border: none; padding: 10px 14px; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.12s; }
 .tab:hover { color: var(--bordeaux); }
 .tab.active { color: var(--bordeaux); border-bottom-color: var(--bordeaux); font-weight: 600; }
- 
+
 .block { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(92,26,43,0.04); }
 .block-title { font-size: 13px; font-weight: 600; color: var(--bordeaux); margin: 0 0 2px; }
 .block-subtitle { font-family: 'DM Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
- 
+
 .repart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
 .repart-stat { text-align: right; }
 .repart-stat .big { font-size: 28px; font-weight: 700; color: var(--bordeaux); line-height: 1; letter-spacing: -0.02em; }
@@ -58,26 +54,26 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .repart-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .repart-alert { margin-top: 12px; background: #FAE6E6; border: 1px solid #E8B0B0; border-radius: 6px; padding: 8px 11px; font-size: 12px; color: var(--conv-color); font-weight: 500; }
 .fond-alert-legend { color: #D14848 !important; font-weight: 700; }
- 
+
 .week-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 14px; margin-bottom: 14px; }
 @media (max-width: 980px) { .week-grid { grid-template-columns: 1fr; } }
- 
+
 .today-item { display: grid; grid-template-columns: 22px 17px 1fr auto auto; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 5px; transition: all 0.12s; background: var(--bg); }
 .today-item:hover { border-color: var(--border-strong); }
 .today-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
 .today-name { font-weight: 500; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .empty-msg { color: var(--text-muted); font-size: 12.5px; font-style: italic; padding: 16px 0 6px; }
 .filtre-clarte { font-family: 'DM Mono', monospace; font-size: 10.5px; font-style: italic; color: var(--text-dim); margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); line-height: 1.45; }
- 
+
 .check { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--border-strong); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.12s; padding: 0; }
 .check:hover { border-color: var(--bordeaux); }
 .check.done { background: var(--bordeaux); border-color: var(--bordeaux); }
 .check.done svg { display: block; }
 .check svg { display: none; width: 11px; height: 11px; }
- 
+
 .xbtn { background: none; border: none; color: var(--text-muted); font-size: 15px; cursor: pointer; padding: 0 4px; line-height: 1; transition: color 0.12s; }
 .xbtn:hover { color: #C13A3A; }
- 
+
 .standup-group-head { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; padding-top: 4px; }
 .standup-group-head:first-child { margin-top: 0; padding-top: 0; }
 .standup-group-dot { width: 7px; height: 7px; border-radius: 50%; }
@@ -87,6 +83,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .standup-item input[type=checkbox] { margin: 0; cursor: pointer; accent-color: var(--bordeaux); }
 .standup-item input[type=checkbox]:disabled { cursor: not-allowed; opacity: 0.4; }
 .standup-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.standup-step { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--text-muted); flex-shrink: 0; }
 .prio-pill { width: 16px; height: 16px; border-radius: 50%; font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
 .prio-pill.H { background: var(--conv-color); }
 .prio-pill.M { background: #C59355; }
@@ -96,27 +93,24 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .btn { background: var(--bordeaux); color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
 .btn:hover:not(:disabled) { background: #4A1523; }
 .btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
- 
-.brief-area { width: 100%; min-height: 100px; border: 1px solid var(--border); border-radius: 7px; padding: 10px 12px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--bg); resize: vertical; line-height: 1.55; }
-.brief-area:focus { outline: none; border-color: var(--bordeaux); }
- 
+
 .add-form { display: grid; grid-template-columns: 2fr 1fr 0.8fr 1fr 0.9fr 1.1fr auto; gap: 6px; margin-bottom: 14px; align-items: center; }
 @media (max-width: 900px) { .add-form { grid-template-columns: 1fr 1fr; } }
 .add-form input, .add-form select { padding: 7px 9px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 12.5px; background: var(--bg); color: var(--text); }
 .add-form input:focus, .add-form select:focus { outline: none; border-color: var(--bordeaux); }
- 
+
 .filters { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; align-items: center; }
 .filter-group-label { font-family: 'DM Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-right: 8px; font-weight: 500; }
 .fbtn { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 5px 10px; border-radius: 14px; font-family: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
 .fbtn:hover { border-color: var(--border-strong); color: var(--text); }
 .fbtn.active { background: var(--bordeaux); color: #fff; border-color: var(--bordeaux); }
- 
+
 .action-card { display: grid; grid-template-columns: 17px 1fr auto auto auto auto auto auto 18px; align-items: center; gap: 8px; padding: 7px 10px; background: #fff; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 6px; transition: all 0.12s; }
 .action-card:hover { border-color: var(--border-strong); box-shadow: 0 1px 2px rgba(92,26,43,0.04); }
 .action-card.done { opacity: 0.55; background: var(--bg-2); }
 .action-card.done .action-name { text-decoration: line-through; color: var(--text-muted); }
 .action-name { font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
- 
+
 .badge { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 10px; white-space: nowrap; letter-spacing: 0.02em; cursor: pointer; user-select: none; transition: all 0.12s; }
 .badge:hover { filter: brightness(1.05); }
 .badge-pilier { color: #fff; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; font-size: 9.5px; }
@@ -136,12 +130,12 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .badge-prio.moyenne { background: var(--bg-3); color: var(--bordeaux); }
 .badge-prio.basse { background: var(--bg-2); color: var(--text-muted); }
 .badge-impact { background: transparent; padding: 2px 5px; letter-spacing: -1.5px; font-size: 11px; color: #D9A73F; }
- 
+
 @media (max-width: 800px) {
   .action-card { grid-template-columns: 17px 1fr auto auto auto auto 18px; }
   .hide-800 { display: none !important; }
 }
- 
+
 .pilier-header { padding: 18px 20px; border-radius: 10px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; }
 .pilier-header.acquisition { background: linear-gradient(135deg, var(--acq-color) 0%, #7A2535 100%); }
 .pilier-header.conversion { background: linear-gradient(135deg, var(--conv-color) 0%, #B8526E 100%); }
@@ -152,7 +146,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .pilier-stats { display: flex; gap: 18px; flex-wrap: wrap; }
 .pilier-stat { font-family: 'DM Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.95; }
 .pilier-stat strong { font-size: 14px; font-weight: 700; display: block; font-family: 'DM Sans', sans-serif; }
- 
+
 .chantier-block { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(92,26,43,0.04); }
 .chantier-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
 .chantier-badge-big { display: inline-flex; padding: 5px 11px; border-radius: 5px; color: #fff; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
@@ -160,19 +154,19 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .chantier-progress-bar { width: 80px; height: 5px; background: var(--bg-2); border-radius: 3px; overflow: hidden; }
 .chantier-progress-fill { height: 100%; transition: width 0.3s; }
 .chantier-step-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); width: 24px; text-align: right; flex-shrink: 0; }
- 
-.chantier-action-row { display: grid; grid-template-columns: 17px 24px 1fr auto auto auto 18px; align-items: center; gap: 8px; padding: 6px 2px; border-bottom: 1px dashed var(--border); }
+
+.chantier-action-row { display: grid; grid-template-columns: 17px 24px 1fr auto auto auto auto 18px; align-items: center; gap: 8px; padding: 6px 2px; border-bottom: 1px dashed var(--border); }
 .chantier-action-row:last-child { border-bottom: none; }
 .chantier-action-row.done .action-name-c { text-decoration: line-through; color: var(--text-muted); opacity: 0.6; }
 .action-name-c { font-size: 12.5px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
- 
+
 .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; font-style: italic; }
 .loading-state { display: flex; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
- 
-.standup-body { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+
+.standup-body { max-height: 480px; overflow-y: auto; padding-right: 4px; }
 .standup-body::-webkit-scrollbar { width: 5px; }
 .standup-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
- 
+
 .error-banner { background: #FAE6E6; border: 1px solid #E8B0B0; border-radius: 6px; padding: 10px 14px; font-size: 12.5px; color: #C13A3A; margin-bottom: 14px; }
 </style>
 </head>
@@ -180,7 +174,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useMemo, useCallback } = React;
- 
+
 const PILIER_META = {
   acquisition: { name: "Acquisition", color: "var(--acq-color)", desc: "Rendre visible — RS, UGC, SEO, GMB, pubs, partenariats visibilité" },
   conversion:  { name: "Conversion",  color: "var(--conv-color)", desc: "Transformer prospects en clients — site, pages de vente, témoignages, DM" },
@@ -188,9 +182,8 @@ const PILIER_META = {
   fondation:   { name: "Fondation",   color: "var(--fond-color)", desc: "Socle long terme — admin, partenariats B2B, vision, outreach entreprise" }
 };
 const PILIER_ORDER = ["acquisition","conversion","produit","fondation"];
-const LOCAL_KEY = "sophro-local-v3";
- 
-// Palette déterministe pour les chantiers (hash -> couleur stable)
+const LOCAL_KEY = "sophro-local-v4";
+
 const CHANTIER_PALETTE = ["#5C1A2B","#A8435A","#D97A54","#8B5E7A","#C59355","#6B8E7F","#7A6BA8","#B5826E","#4A7A8C","#96593F","#7A4A6B","#5E8A7D","#A86B5E","#6B7A8A"];
 function chantierColor(name) {
   if (!name) return "#A8908E";
@@ -198,14 +191,14 @@ function chantierColor(name) {
   for (let i = 0; i < name.length; i++) hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
   return CHANTIER_PALETTE[Math.abs(hash) % CHANTIER_PALETTE.length];
 }
- 
+
 const api = {
   list: () => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "list"}) }).then(r => r.json()),
   update: (id, patch) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "update", id, patch}) }).then(r => r.json()),
   create: (action) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "create", action})}).then(r => r.json()),
   delete: (id) => fetch("/api/notion", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "delete", id}) }).then(r => r.json()),
 };
- 
+
 function getMondayISO() {
   const d = new Date(); const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1);
@@ -227,10 +220,10 @@ function loadLocal() {
       return s;
     }
   } catch(e) {}
-  return { today: [], weekNote: "", standupSel: [], activeTab: "week", filter: "all", weekStart: getMondayISO() };
+  return { today: [], standupSel: [], activeTab: "week", filter: "all", weekStart: getMondayISO() };
 }
 function saveLocal(s) { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(s)); } catch(e) {} }
- 
+
 function Check({ done, onClick }) {
   return (
     <button className={"check" + (done ? " done" : "")} onClick={onClick}>
@@ -238,7 +231,7 @@ function Check({ done, onClick }) {
     </button>
   );
 }
- 
+
 function RepartitionBloc({ actions }) {
   const open = actions.filter(a => a.status !== "Fait");
   const counts = { acquisition:0, conversion:0, produit:0, fondation:0 };
@@ -274,13 +267,13 @@ function RepartitionBloc({ actions }) {
     </div>
   );
 }
- 
-function Stars({ n }) { return <span className="badge badge-impact">{"⭐".repeat(n)}</span>; }
+
+function Stars({ n, onClick }) { return <span className="badge badge-impact" onClick={onClick} style={{cursor: onClick ? "pointer" : "default"}}>{"⭐".repeat(n)}</span>; }
 function Pastilles({ done, total }) {
   let s = ""; for (let i=0;i<total;i++) s += i < done ? "●" : "○";
   return <span className="pastilles">{s}</span>;
 }
- 
+
 function ChantierBadge({ name, step }) {
   if (!name) return null;
   return (
@@ -290,7 +283,7 @@ function ChantierBadge({ name, step }) {
     </span>
   );
 }
- 
+
 function ActionCard({ action, onToggle, onCycle, onRename, onDelete }) {
   const isDone = action.status === "Fait";
   const isRecur = action.recur > 0;
@@ -307,18 +300,19 @@ function ActionCard({ action, onToggle, onCycle, onRename, onDelete }) {
         <span className={"badge badge-status hide-800" + (action.status==="Fait" ? " done" : action.status==="En cours" ? " progress" : "")} onClick={() => onCycle(action.id, "status")}>{action.status}</span>
       )}
       <span className={"badge badge-prio " + action.prio.toLowerCase()} onClick={() => onCycle(action.id, "prio")}>{action.prio}</span>
-      <Stars n={action.impact} />
+      <Stars n={action.impact} onClick={() => onCycle(action.id, "impact")} />
       <button className="xbtn" onClick={() => onDelete(action.id)}>×</button>
     </div>
   );
 }
- 
+
 function ActionList({ actions, ...handlers }) {
   if (!actions.length) return <div className="empty-state">Aucune action dans cette vue.</div>;
   return <div>{actions.map(a => <ActionCard key={a.id} action={a} {...handlers} />)}</div>;
 }
- 
-function ChantierActionRow({ action, onToggle, onRename, onDelete }) {
+
+// Vue compacte dans un chantier : badges cliquables (statut/prio/impact)
+function ChantierActionRow({ action, onToggle, onCycle, onRename, onDelete }) {
   const isDone = action.status === "Fait";
   const isRecur = action.recur > 0;
   return (
@@ -326,18 +320,19 @@ function ChantierActionRow({ action, onToggle, onRename, onDelete }) {
       <Check done={isDone} onClick={() => onToggle(action.id)} />
       <span className="chantier-step-num">{action.step ? "#" + action.step : ""}</span>
       <div className="action-name-c" onDoubleClick={() => onRename(action.id)} title={action.name}>{action.name}</div>
+      <span className={"badge badge-pilier " + action.pillar} onClick={() => onCycle(action.id, "pillar")}>{PILIER_META[action.pillar].name}</span>
       {isRecur ? (
         <span className="badge badge-recur"><Pastilles done={action.weekDone} total={action.recur} /><span>{action.weekDone}/{action.recur}</span></span>
       ) : (
-        <span className={"badge badge-status" + (isDone ? " done" : action.status==="En cours" ? " progress" : "")}>{action.status}</span>
+        <span className={"badge badge-status" + (isDone ? " done" : action.status==="En cours" ? " progress" : "")} onClick={() => onCycle(action.id, "status")}>{action.status}</span>
       )}
-      <span className={"badge badge-prio " + action.prio.toLowerCase()}>{action.prio}</span>
-      <Stars n={action.impact} />
+      <span className={"badge badge-prio " + action.prio.toLowerCase()} onClick={() => onCycle(action.id, "prio")}>{action.prio}</span>
+      <Stars n={action.impact} onClick={() => onCycle(action.id, "impact")} />
       <button className="xbtn" onClick={() => onDelete(action.id)}>×</button>
     </div>
   );
 }
- 
+
 function ChantierBloc({ name, actions, ...handlers }) {
   const total = actions.length;
   const done = actions.filter(a => a.status === "Fait").length;
@@ -361,7 +356,34 @@ function ChantierBloc({ name, actions, ...handlers }) {
     </div>
   );
 }
- 
+
+// Vue par chantiers — rassemble les actions en blocs
+function ChantiersView({ actions, chantiersList, ...handlers }) {
+  const byChantier = {}; chantiersList.forEach(c => byChantier[c] = []);
+  const orphans = [];
+  actions.forEach(a => { if (a.chantier && byChantier[a.chantier]) byChantier[a.chantier].push(a); else orphans.push(a); });
+
+  // Ne garder que les chantiers qui ont des actions après filtrage
+  const activeChantiers = chantiersList.filter(c => byChantier[c].length > 0);
+  // Tri : chantiers avec le plus d'actions ouvertes en premier
+  activeChantiers.sort((a, b) => {
+    const openA = byChantier[a].filter(x => x.status !== "Fait").length;
+    const openB = byChantier[b].filter(x => x.status !== "Fait").length;
+    if (openB !== openA) return openB - openA;
+    return a.localeCompare(b);
+  });
+
+  if (activeChantiers.length === 0 && orphans.length === 0) {
+    return <div className="empty-state">Aucune action ne correspond à ce filtre.</div>;
+  }
+  return (
+    <>
+      {activeChantiers.map(c => <ChantierBloc key={c} name={c} actions={byChantier[c]} {...handlers} />)}
+      {orphans.length > 0 && <ChantierBloc name="Sans chantier" actions={orphans} {...handlers} />}
+    </>
+  );
+}
+
 function TodayBloc({ actions, today, onToggle, onRemoveToday }) {
   const items = today.map(id => actions.find(a => a.id === id)).filter(Boolean);
   return (
@@ -378,7 +400,7 @@ function TodayBloc({ actions, today, onToggle, onRemoveToday }) {
               <span className="today-num">{String(i+1).padStart(2,"0")}</span>
               <Check done={isDone} onClick={() => onToggle(a.id)} />
               <div className="today-name" title={a.name}>{a.name}</div>
-              <span className={"badge badge-pilier " + a.pillar}>{PILIER_META[a.pillar].name}</span>
+              {a.chantier ? <ChantierBadge name={a.chantier} step={a.step} /> : <span className={"badge badge-pilier " + a.pillar}>{PILIER_META[a.pillar].name}</span>}
               <button className="xbtn" onClick={() => onRemoveToday(a.id)}>×</button>
             </div>
           );
@@ -388,27 +410,60 @@ function TodayBloc({ actions, today, onToggle, onRemoveToday }) {
     </div>
   );
 }
- 
-function StandupPicker({ actions, today, standupSel, onToggleSel, onAddToToday }) {
+
+// Standup picker groupé par CHANTIER (dynamique)
+function StandupPicker({ actions, today, standupSel, onToggleSel, onAddToToday, chantiersList }) {
   const available = actions.filter(a => a.status !== "Fait" && !today.includes(a.id));
-  const grouped = {}; PILIER_ORDER.forEach(p => grouped[p] = []);
-  available.forEach(a => grouped[a.pillar].push(a));
+
+  const byChantier = {};
+  chantiersList.forEach(c => byChantier[c] = []);
+  const orphans = [];
+  available.forEach(a => { if (a.chantier && byChantier[a.chantier]) byChantier[a.chantier].push(a); else orphans.push(a); });
+
   const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
-  PILIER_ORDER.forEach(p => grouped[p].sort((a,b) => prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact));
+  const stepKey = (a) => a.step ?? 9999;
+  const sortFn = (a,b) => stepKey(a) - stepKey(b) || prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact;
+
+  const activeChantiers = chantiersList.filter(c => byChantier[c].length > 0);
+  activeChantiers.sort((a, b) => byChantier[b].length - byChantier[a].length || a.localeCompare(b));
+  activeChantiers.forEach(c => byChantier[c].sort(sortFn));
+  orphans.sort(sortFn);
+
   const roomLeft = 5 - today.length;
   const canAdd = standupSel.length > 0 && roomLeft > 0;
+
   return (
     <div className="block">
       <div className="block-title">Standup picker</div>
       <div className="block-subtitle">Sélectionner jusqu'à 5 actions pour aujourd'hui</div>
       <div className="standup-body" style={{marginTop: 10}}>
-        {PILIER_ORDER.map(p => grouped[p].length > 0 && (
-          <div key={p}>
+        {activeChantiers.map(c => (
+          <div key={c}>
             <div className="standup-group-head">
-              <div className="standup-group-dot" style={{background: PILIER_META[p].color}} />
-              <div className="standup-group-name">{PILIER_META[p].name}</div>
+              <div className="standup-group-dot" style={{background: chantierColor(c)}} />
+              <div className="standup-group-name">{c}</div>
             </div>
-            {grouped[p].map(a => {
+            {byChantier[c].map(a => {
+              const selected = standupSel.includes(a.id);
+              const disabled = !selected && standupSel.length >= 5;
+              return (
+                <label key={a.id} className="standup-item">
+                  <input type="checkbox" checked={selected} disabled={disabled} onChange={() => onToggleSel(a.id)} />
+                  {a.step ? <span className="standup-step">#{a.step}</span> : null}
+                  <span className="standup-name" title={a.name}>{a.name}</span>
+                  <span className={"prio-pill " + a.prio[0]}>{a.prio[0]}</span>
+                </label>
+              );
+            })}
+          </div>
+        ))}
+        {orphans.length > 0 && (
+          <div>
+            <div className="standup-group-head">
+              <div className="standup-group-dot" style={{background: "#A8908E"}} />
+              <div className="standup-group-name">Sans chantier</div>
+            </div>
+            {orphans.map(a => {
               const selected = standupSel.includes(a.id);
               const disabled = !selected && standupSel.length >= 5;
               return (
@@ -420,7 +475,7 @@ function StandupPicker({ actions, today, standupSel, onToggleSel, onAddToToday }
               );
             })}
           </div>
-        ))}
+        )}
         {available.length === 0 && <div className="empty-state" style={{padding:"14px 0"}}>Toutes les actions disponibles sont déjà dans Aujourd'hui.</div>}
       </div>
       <div className="standup-footer">
@@ -432,17 +487,7 @@ function StandupPicker({ actions, today, standupSel, onToggleSel, onAddToToday }
     </div>
   );
 }
- 
-function BriefBloc({ value, onChange }) {
-  return (
-    <div className="block">
-      <div className="block-title">Brief de la semaine</div>
-      <div className="block-subtitle">Ce que je veux faire bouger</div>
-      <textarea className="brief-area" style={{marginTop: 10}} value={value} onChange={(e) => onChange(e.target.value)} placeholder="Ce que je veux faire bouger cette semaine…" />
-    </div>
-  );
-}
- 
+
 function AddForm({ onAdd }) {
   const [name, setName] = useState(""); const [pillar, setPillar] = useState("acquisition");
   const [type, setType] = useState("B2C"); const [prio, setPrio] = useState("Moyenne");
@@ -469,7 +514,7 @@ function AddForm({ onAdd }) {
     </div>
   );
 }
- 
+
 function App() {
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -477,7 +522,7 @@ function App() {
   const [syncState, setSyncState] = useState("idle");
   const [local, setLocal] = useState(loadLocal);
   useEffect(() => saveLocal(local), [local]);
- 
+
   const fetchActions = useCallback(async () => {
     setSyncState("syncing");
     try {
@@ -490,16 +535,15 @@ function App() {
     } finally { setLoading(false); }
   }, []);
   useEffect(() => { fetchActions(); }, [fetchActions]);
- 
-  // Liste DYNAMIQUE des chantiers, calculée à partir des actions
+
   const chantiersList = useMemo(() => {
     const set = new Set();
     actions.forEach(a => { if (a.chantier) set.add(a.chantier); });
     return Array.from(set).sort();
   }, [actions]);
- 
+
   const updateLocalAction = (id, patch) => setActions(as => as.map(a => a.id === id ? {...a, ...patch} : a));
- 
+
   const syncUpdate = async (id, patch) => {
     setSyncState("syncing");
     try {
@@ -508,7 +552,7 @@ function App() {
       setSyncState("idle");
     } catch(e) { setSyncState("error"); setError("Sync échouée : " + e.message); }
   };
- 
+
   const toggleDone = async (id) => {
     const a = actions.find(x => x.id === id); if (!a) return;
     if (a.recur > 0) {
@@ -522,7 +566,7 @@ function App() {
       syncUpdate(id, { status: newStatus });
     }
   };
- 
+
   const cycleField = (id, field) => {
     const a = actions.find(x => x.id === id); if (!a) return;
     let patch = {};
@@ -533,13 +577,13 @@ function App() {
     if (field === "impact") patch.impact = a.impact === 3 ? 1 : a.impact + 1;
     updateLocalAction(id, patch); syncUpdate(id, patch);
   };
- 
+
   const renameAction = (id) => {
     const a = actions.find(x => x.id === id); if (!a) return;
     const name = prompt("Renommer l'action :", a.name);
     if (name && name.trim()) { updateLocalAction(id, { name: name.trim() }); syncUpdate(id, { name: name.trim() }); }
   };
- 
+
   const deleteAction = async (id) => {
     if (!confirm("Supprimer définitivement cette action ?")) return;
     setActions(as => as.filter(a => a.id !== id));
@@ -548,7 +592,7 @@ function App() {
     try { await api.delete(id); setSyncState("idle"); }
     catch(e) { setSyncState("error"); setError("Suppression échouée : " + e.message); }
   };
- 
+
   const addAction = async (a) => {
     setSyncState("syncing");
     try {
@@ -557,7 +601,7 @@ function App() {
       setActions(prev => [res, ...prev]); setSyncState("idle");
     } catch(e) { setSyncState("error"); setError("Création échouée : " + e.message); }
   };
- 
+
   const removeFromToday = (id) => setLocal(l => ({...l, today: l.today.filter(i => i !== id)}));
   const toggleStandupSel = (id) => setLocal(l => ({...l, standupSel: l.standupSel.includes(id) ? l.standupSel.filter(i => i !== id) : (l.standupSel.length < 5 ? [...l.standupSel, id] : l.standupSel)}));
   const addToToday = () => setLocal(l => {
@@ -565,7 +609,8 @@ function App() {
     const toAdd = l.standupSel.slice(0, avail);
     return {...l, today: [...l.today, ...toAdd], standupSel: [], activeTab: "week"};
   });
- 
+
+  // Filtrage pour "Toutes les actions" — retourne les actions filtrées (qui seront ensuite regroupées par chantier)
   const filteredActions = useMemo(() => {
     let out = actions; const f = local.filter;
     if (f === "all") out = actions.filter(a => a.status !== "Fait");
@@ -579,12 +624,11 @@ function App() {
       const c = f.substring("chantier:".length);
       out = actions.filter(a => a.status !== "Fait" && a.chantier === c);
     }
-    const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
-    return [...out].sort((a,b) => prioKey[a.prio] - prioKey[b.prio] || b.impact - a.impact);
+    return out;
   }, [actions, local.filter]);
- 
+
   const handlers = { onToggle: toggleDone, onCycle: cycleField, onRename: renameAction, onDelete: deleteAction };
- 
+
   const pillarView = (p) => {
     const acts = actions.filter(a => a.pillar === p && a.status !== "Fait");
     const prioKey = { Haute: 0, Moyenne: 1, Basse: 2 };
@@ -615,41 +659,13 @@ function App() {
       </>
     );
   };
- 
-  const chantiersView = () => {
-    const byChantier = {}; chantiersList.forEach(c => byChantier[c] = []);
-    const orphans = [];
-    actions.forEach(a => { if (a.chantier) byChantier[a.chantier]?.push(a); else orphans.push(a); });
-    const sorted = [...chantiersList].sort((a, b) => {
-      const openA = byChantier[a].filter(x => x.status !== "Fait").length;
-      const openB = byChantier[b].filter(x => x.status !== "Fait").length;
-      return openB - openA;
-    });
-    return (
-      <>
-        <RepartitionBloc actions={actions} />
-        {sorted.length === 0 && orphans.length === 0 && (
-          <div className="block"><div className="empty-state">Aucune action chargée.</div></div>
-        )}
-        {sorted.length === 0 && orphans.length > 0 && (
-          <div className="block">
-            <div className="empty-state">
-              Aucun chantier défini pour le moment. Dans Notion, remplis le champ "Chantier" sur tes actions, puis rafraîchis cette page.
-            </div>
-          </div>
-        )}
-        {sorted.map(c => <ChantierBloc key={c} name={c} actions={byChantier[c]} {...handlers} />)}
-        {orphans.length > 0 && sorted.length > 0 && <ChantierBloc name="Sans chantier" actions={orphans} {...handlers} />}
-      </>
-    );
-  };
- 
+
   const baseFilters = [["all","Toutes ouvertes"],["haute","Haute prio"],["recurrent","Récurrentes"],["done","Fait"]];
   const pillarFilters = [["acquisition","Acquisition"],["conversion","Conversion"],["produit","Produit"],["fondation","Fondation"]];
   const typeFilters = [["B2C","B2C"],["B2B","B2B"]];
- 
+
   const tabs = [["week","Cette semaine"],["open","Toutes les actions"],["chantiers","Chantiers"],["acquisition","Acquisition"],["conversion","Conversion"],["produit","Produit"],["fondation","Fondation"]];
- 
+
   return (
     <div className="app">
       <div className="header">
@@ -665,15 +681,15 @@ function App() {
           </div>
         </div>
       </div>
- 
+
       {error && <div className="error-banner">{error} <button className="xbtn" onClick={() => setError(null)}>×</button></div>}
- 
+
       <div className="tabs">
         {tabs.map(([k, l]) => (
           <button key={k} className={"tab" + (local.activeTab === k ? " active" : "")} onClick={() => setLocal(s => ({...s, activeTab: k}))}>{l}</button>
         ))}
       </div>
- 
+
       {loading ? <div className="loading-state">Chargement des actions depuis Notion…</div> : (
         <>
           {local.activeTab === "week" && (
@@ -681,9 +697,8 @@ function App() {
               <RepartitionBloc actions={actions} />
               <div className="week-grid">
                 <TodayBloc actions={actions} today={local.today} onToggle={toggleDone} onRemoveToday={removeFromToday} />
-                <StandupPicker actions={actions} today={local.today} standupSel={local.standupSel} onToggleSel={toggleStandupSel} onAddToToday={addToToday} />
+                <StandupPicker actions={actions} today={local.today} standupSel={local.standupSel} onToggleSel={toggleStandupSel} onAddToToday={addToToday} chantiersList={chantiersList} />
               </div>
-              <BriefBloc value={local.weekNote} onChange={(v) => setLocal(s => ({...s, weekNote: v}))} />
             </>
           )}
           {local.activeTab === "open" && (
@@ -719,20 +734,25 @@ function App() {
                     <button className={"fbtn" + (local.filter === "no-chantier" ? " active" : "")} onClick={() => setLocal(s => ({...s, filter: "no-chantier"}))}>Sans chantier</button>
                   </div>
                 )}
-                <div style={{marginTop: 14}}>
-                  <ActionList actions={filteredActions} {...handlers} />
+                <div style={{marginTop: 18}}>
+                  <ChantiersView actions={filteredActions} chantiersList={chantiersList} {...handlers} />
                 </div>
               </div>
             </>
           )}
-          {local.activeTab === "chantiers" && chantiersView()}
+          {local.activeTab === "chantiers" && (
+            <>
+              <RepartitionBloc actions={actions} />
+              <ChantiersView actions={actions} chantiersList={chantiersList} {...handlers} />
+            </>
+          )}
           {PILIER_ORDER.includes(local.activeTab) && pillarView(local.activeTab)}
         </>
       )}
     </div>
   );
 }
- 
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
