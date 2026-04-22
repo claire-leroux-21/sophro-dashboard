@@ -1,23 +1,24 @@
 // Netlify Function : API unique pour toutes les opérations Notion
 // Endpoint: /api/notion
 // Body: { action: "list" | "update" | "create" | "delete", ... }
-
+ 
 const { Client } = require("@notionhq/client");
-
+ 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATA_SOURCE_ID = process.env.NOTION_DATA_SOURCE_ID || "0d6410e0-cc44-4150-a6e8-c33350bb7773";
-
+const DATABASE_ID = process.env.NOTION_DATABASE_ID || "ae4e9cff-a719-4665-9134-fbd1110bf77e";
+ 
 // ===== Mappings Notion <-> Dashboard =====
-
+ 
 const STATUS_NOTION_TO_DASH = { "Not started": "À faire", "In progress": "En cours", "Done": "Fait" };
 const STATUS_DASH_TO_NOTION = { "À faire": "Not started", "En cours": "In progress", "Fait": "Done" };
-
+ 
 const PILIER_NOTION_TO_DASH = { "Acquisition": "acquisition", "Conversion": "conversion", "Produit": "produit", "Fondation": "fondation" };
 const PILIER_DASH_TO_NOTION = { "acquisition": "Acquisition", "conversion": "Conversion", "produit": "Produit", "fondation": "Fondation" };
-
+ 
 const IMPACT_NOTION_TO_DASH = { "⭐": 1, "⭐⭐": 2, "⭐⭐⭐": 3 };
 const IMPACT_DASH_TO_NOTION = { 1: "⭐", 2: "⭐⭐", 3: "⭐⭐⭐" };
-
+ 
 const RECUR_NOTION_TO_DASH = {
   "Ponctuel": 0,
   "Hebdo 1×": 1,
@@ -33,7 +34,7 @@ const RECUR_DASH_TO_NOTION = (n) => {
   if (n === 7) return "Hebdo 5×"; // fallback (Notion n'a pas "tous les jours")
   return "Hebdo 1×";
 };
-
+ 
 // Parse une page Notion → objet action dashboard
 function parsePage(page) {
   const p = page.properties;
@@ -49,12 +50,12 @@ function parsePage(page) {
     return arr.map(t => t.plain_text).join("");
   };
   const getDate = (name) => p[name]?.date?.start || null;
-
+ 
   const pillarNotion = getSelect("Pilier");
   const statusNotion = getStatus("Statut");
   const impactNotion = getSelect("Impact");
   const recurNotion = getSelect("Récurrence");
-
+ 
   return {
     id: page.id,
     name: getTitle("Action"),
@@ -69,7 +70,7 @@ function parsePage(page) {
     dueDate: getDate("Due Date")
   };
 }
-
+ 
 // Objet action → propriétés Notion
 function buildProperties(action) {
   const props = {};
@@ -99,15 +100,15 @@ function buildProperties(action) {
   }
   return props;
 }
-
+ 
 // ===== Handlers =====
-
+ 
 async function listActions() {
   const results = [];
   let cursor = undefined;
   do {
-    const response = await notion.dataSources.query({
-      data_source_id: DATA_SOURCE_ID,
+    const response = await notion.databases.query({
+      database_id: DATABASE_ID,
       start_cursor: cursor,
       page_size: 100
     });
@@ -116,7 +117,7 @@ async function listActions() {
   } while (cursor);
   return results.map(parsePage);
 }
-
+ 
 async function updateAction(id, patch) {
   await notion.pages.update({
     page_id: id,
@@ -124,15 +125,15 @@ async function updateAction(id, patch) {
   });
   return { ok: true };
 }
-
+ 
 async function createAction(action) {
   const response = await notion.pages.create({
-    parent: { data_source_id: DATA_SOURCE_ID },
+    parent: { database_id: DATABASE_ID },
     properties: buildProperties(action)
   });
   return { ok: true, id: response.id, ...parsePage(response) };
 }
-
+ 
 async function deleteAction(id) {
   await notion.pages.update({
     page_id: id,
@@ -140,20 +141,20 @@ async function deleteAction(id) {
   });
   return { ok: true };
 }
-
+ 
 async function appendHistory(id, text) {
   const today = new Date();
   const d = String(today.getDate()).padStart(2, "0");
   const m = String(today.getMonth() + 1).padStart(2, "0");
   const y = today.getFullYear();
   const dateStr = `${d}/${m}/${y}`;
-
+ 
   // Récupère les blocs existants
   const blocks = await notion.blocks.children.list({ block_id: id, page_size: 50 });
   const hasHistoryHeading = blocks.results.some(
     b => b.type === "heading_2" && b.heading_2?.rich_text?.some(t => t.plain_text === "History")
   );
-
+ 
   const newBlocks = [];
   if (!hasHistoryHeading) {
     newBlocks.push({
@@ -172,13 +173,13 @@ async function appendHistory(id, text) {
       ]
     }
   });
-
+ 
   await notion.blocks.children.append({ block_id: id, children: newBlocks });
   return { ok: true };
 }
-
+ 
 // ===== Handler principal =====
-
+ 
 exports.handler = async (event) => {
   const headers = {
     "Content-Type": "application/json",
@@ -186,17 +187,17 @@ exports.handler = async (event) => {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type"
   };
-
+ 
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
-
+ 
   try {
     if (!process.env.NOTION_TOKEN) {
       return { statusCode: 500, headers, body: JSON.stringify({ error: "NOTION_TOKEN not set" }) };
     }
-
+ 
     const body = event.body ? JSON.parse(event.body) : {};
     const action = body.action || (event.httpMethod === "GET" ? "list" : null);
-
+ 
     let result;
     switch (action) {
       case "list":
@@ -217,7 +218,7 @@ exports.handler = async (event) => {
       default:
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Unknown action: " + action }) };
     }
-
+ 
     return { statusCode: 200, headers, body: JSON.stringify(result) };
   } catch (err) {
     console.error("Function error:", err);
