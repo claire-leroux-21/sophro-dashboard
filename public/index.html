@@ -320,9 +320,11 @@ function ChantierBadge({ name, step }) {
 function ActionCard({ action, onToggle, onCycle, onRename, onDelete, onSetWeekDone }) {
   const isDone = action.status === "Fait";
   const isRecur = action.recur > 0;
+  const isRecurDone = isRecur && action.weekDone >= action.recur && action.recur > 0;
+  const displayDone = isDone || isRecurDone;
   return (
-    <div className={"action-card" + (isDone ? " done" : "")} title={action.name}>
-      <Check done={isDone} onClick={() => onToggle(action.id)} />
+    <div className={"action-card" + (displayDone ? " done" : "")} title={action.name}>
+      <Check done={displayDone} onClick={() => onToggle(action.id)} />
       <div className="action-name" onDoubleClick={() => onRename(action.id)}>{action.name}</div>
       {action.chantier ? <ChantierBadge name={action.chantier} step={action.step} /> : <span />}
       <span className={"badge badge-pilier " + action.pillar} onClick={() => onCycle(action.id, "pillar")}>{PILIER_META[action.pillar].name}</span>
@@ -348,9 +350,11 @@ function ActionList({ actions, ...handlers }) {
 function ChantierActionRow({ action, onToggle, onCycle, onRename, onDelete, onSetWeekDone }) {
   const isDone = action.status === "Fait";
   const isRecur = action.recur > 0;
+  const isRecurDone = isRecur && action.weekDone >= action.recur && action.recur > 0;
+  const displayDone = isDone || isRecurDone;
   return (
-    <div className={"chantier-action-row" + (isDone ? " done" : "")}>
-      <Check done={isDone} onClick={() => onToggle(action.id)} />
+    <div className={"chantier-action-row" + (displayDone ? " done" : "")}>
+      <Check done={displayDone} onClick={() => onToggle(action.id)} />
       <span className="chantier-step-num">{action.step ? "#" + action.step : ""}</span>
       <div className="action-name-c" onDoubleClick={() => onRename(action.id)} title={action.name}>{action.name}</div>
       <span className={"badge badge-pilier " + action.pillar} onClick={() => onCycle(action.id, "pillar")}>{PILIER_META[action.pillar].name}</span>
